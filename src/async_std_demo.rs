@@ -64,9 +64,6 @@ pub async fn parallel_threads() -> Result<(f64, f64)> {
     // In terms of syntax, this seems like the worst option.
     let handle1 = thread::spawn(|| sum_file_sync("./numbers1.txt"));
     let handle2 = thread::spawn(|| sum_file_sync("./numbers3.txt"));
-    // The async version can be run in a thread if block_on is used.
-    //let handle1 = thread::spawn(|| task::block_on(sum_file_async("./numbers1.txt")));
-    //let handle2 = thread::spawn(|| task::block_on(sum_file_async("./numbers3.txt")));
     // The join! macro takes Futures.
     // The next line doesn't work because it is passing JoinHandles.
     //let (sum1, sum2) = join!(handle1, handle2);

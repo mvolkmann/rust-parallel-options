@@ -60,9 +60,6 @@ pub async fn parallel_threads() -> Result<(f64, f64)> {
     // In terms of syntax, this seems like the worst option.
     let handle1 = thread::spawn(|| sum_file_sync("./numbers1.txt"));
     let handle2 = thread::spawn(|| sum_file_sync("./numbers3.txt"));
-    // The async version can be run in a thread if block_on is used.
-    //let handle1 = thread::spawn(|| task::block_on(sum_file_async("./numbers1.txt")));
-    //let handle2 = thread::spawn(|| task::block_on(sum_file_async("./numbers3.txt")));
     // The join! macro takes Futures.
     // The next line doesn't work because it is passing JoinHandles.
     //let (sum1, sum2) = join!(handle1, handle2);
@@ -76,6 +73,9 @@ pub async fn parallel_tasks() -> Result<(f64, f64)> {
     let handle1 = task::spawn(sum_file_async("./numbers1.txt"));
     let handle2 = task::spawn(sum_file_async("./numbers3.txt"));
     let (result1, result2) = join!(handle1, handle2);
-    //TODO: Why are double ?? needed here, but not in async_std_demo.rs?
+    // Unlike in the async_std code where each result value
+    // has the type Result<f64, JoinError>,
+    // in tokio these have the type Result<Result<f64, io::Error>, JoinError>.
+    // This is why double ?? are needed below to get the f64 values.
     Ok((result1??, result2??))
 }
