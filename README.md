@@ -9,3 +9,7 @@ This demonstrates many options for executing a pair of functions in Rust includi
 
 These options are demonstrated using the `std`, `async_std`, and `tokio` crates.
 Note that options 2 and 4 are not possible using only the `std` crate.
+
+The file `src/main.rs` exercises all four options using a single crate.
+To use a different crate, uncomment the related code in this file
+and comment the previously uncommented part.
