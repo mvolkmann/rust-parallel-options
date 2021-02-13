@@ -27,12 +27,12 @@ pub fn serial() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
     Ok((sum1, sum2))
 }
 
-pub fn concurrent_one_thread() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
+pub fn concurrent() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
     // std cannot do this.
     Ok((0.0, 0.0))
 }
 
-pub fn parallel_os_threads() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
+pub fn parallel_threads() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
     // Run in parallel using OS threads.
     // In terms of syntax, this seems like the worst option.
     let handle1 = thread::spawn(|| sum_file_sync("./numbers1.txt"));

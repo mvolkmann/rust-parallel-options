@@ -51,7 +51,7 @@ let sum1 = sum_file_async("./numbers1.txt").await?;
 let sum2 = sum_file_async("./numbers3.txt").await?;
 */
 
-pub async fn concurrent_one_thread() -> Result<(f64, f64)> {
+pub async fn concurrent() -> Result<(f64, f64)> {
     let (result1, result2) = join!(
         sum_file_async("./numbers1.txt"),
         sum_file_async("./numbers3.txt")
@@ -59,7 +59,7 @@ pub async fn concurrent_one_thread() -> Result<(f64, f64)> {
     Ok((result1?, result2?))
 }
 
-pub async fn parallel_os_threads() -> Result<(f64, f64)> {
+pub async fn parallel_threads() -> Result<(f64, f64)> {
     // In terms of syntax, this seems like the worst option.
     let handle1 = thread::spawn(|| sum_file_sync("./numbers1.txt"));
     let handle2 = thread::spawn(|| sum_file_sync("./numbers3.txt"));
