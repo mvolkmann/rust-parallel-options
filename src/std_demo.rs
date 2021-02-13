@@ -1,15 +1,11 @@
-use std::error::Error;
 use std::{
     fs::File,
-    io::{BufReader, Result},
+    io::{prelude::*, BufReader, Result},
+    thread,
 };
-// This is needed to call the "lines" method on a std::io::BufReader.
-use std::io::prelude::*;
-use std::thread;
 
-// This version is for running inside multiple threads.
 fn sum_file_sync(file_path: &str) -> Result<f64> {
-    let f = File::open(file_path)?; // not async
+    let f = File::open(file_path)?;
     let reader = BufReader::new(f);
     let mut sum = 0.0;
     for line in reader.lines() {
@@ -21,19 +17,18 @@ fn sum_file_sync(file_path: &str) -> Result<f64> {
     Ok(sum)
 }
 
-pub fn serial() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
+pub fn serial() -> Result<(f64, f64)> {
     let sum1 = sum_file_sync("./numbers1.txt")?;
     let sum2 = sum_file_sync("./numbers3.txt")?;
     Ok((sum1, sum2))
 }
 
-pub fn concurrent() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
+pub fn concurrent() -> Result<(f64, f64)> {
     // std cannot do this.
     Ok((0.0, 0.0))
 }
 
-pub fn parallel_threads() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
-    // Run in parallel using OS threads.
+pub fn parallel_threads() -> Result<(f64, f64)> {
     // In terms of syntax, this seems like the worst option.
     let handle1 = thread::spawn(|| sum_file_sync("./numbers1.txt"));
     let handle2 = thread::spawn(|| sum_file_sync("./numbers3.txt"));
@@ -43,7 +38,7 @@ pub fn parallel_threads() -> std::result::Result<(f64, f64), Box<dyn Error + 'st
     Ok((sum1, sum2))
 }
 
-pub fn parallel_tasks() -> std::result::Result<(f64, f64), Box<dyn Error + 'static>> {
+pub fn parallel_tasks() -> Result<(f64, f64)> {
     // std cannot do this.
     Ok((0.0, 0.0))
 }

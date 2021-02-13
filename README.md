@@ -1,6 +1,6 @@
 # rust-parallel-options
 
-This demonstrates many options for executing a pair of functions in Rust including:
+This demonstrates many options for executing a pair Rust functions including:
 
 1. serially: one at a time
 1. concurrently: taking turns using a single thread
