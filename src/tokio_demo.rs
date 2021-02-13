@@ -8,7 +8,6 @@ use tokio::{
     task,
 };
 
-// This version is for running inside multiple threads.
 fn sum_file_sync(file_path: &str) -> Result<f64> {
     let f = std::fs::File::open(file_path)?;
     let reader = std::io::BufReader::new(f);
@@ -22,8 +21,6 @@ fn sum_file_sync(file_path: &str) -> Result<f64> {
     Ok(sum)
 }
 
-// This version is for running concurrently inside a single thread.
-// The return type, in this case a Result, is wrapped in a Future.
 async fn sum_file_async(file_path: &str) -> Result<f64> {
     let f = File::open(file_path).await?;
     let reader = BufReader::new(f);
@@ -79,6 +76,6 @@ pub async fn parallel_tasks() -> Result<(f64, f64)> {
     let handle1 = task::spawn(sum_file_async("./numbers1.txt"));
     let handle2 = task::spawn(sum_file_async("./numbers3.txt"));
     let (result1, result2) = join!(handle1, handle2);
-    //TODO: Why are double ?? needed here?
+    //TODO: Why are double ?? needed here, but not in async_std_demo.rs?
     Ok((result1??, result2??))
 }

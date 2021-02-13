@@ -10,7 +10,6 @@ use futures::join;
 use std::io::prelude::*;
 use std::thread;
 
-// This version is for running inside multiple threads.
 fn sum_file_sync(file_path: &str) -> Result<f64> {
     let f = std::fs::File::open(file_path)?;
     let reader = std::io::BufReader::new(f);
@@ -24,8 +23,6 @@ fn sum_file_sync(file_path: &str) -> Result<f64> {
     Ok(sum)
 }
 
-// This version is for running concurrently inside a single thread.
-// The return type, in this case a Result, is wrapped in a Future.
 async fn sum_file_async(file_path: &str) -> Result<f64> {
     // Must use async_std::fs::File instead of std::fs::File
     // in order to pass to async_std::io::BufReader.
